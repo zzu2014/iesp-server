@@ -8,5 +8,5 @@ import java.util.List;
  * Created by tangfei on 14-8-7.
  */
 public interface ContactsDAO {
-    public List<Contacts> list();
+    public List<Contacts> list(String accountname);
 }

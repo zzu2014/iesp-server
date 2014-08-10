@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
-    <title></title>
+    <title>Welcome to ContactBackup</title>
 </head>
 <body>
     <%--<div align="center">
@@ -29,6 +29,40 @@
             </c:forEach>
         </table>
     </div>--%>
+
+    <div align="center">
+        <h1>Contact List</h1>
+        <table border="1">
+            <th>No</th>
+            <th>ContactName</th>
+            <th>Phone_1</th>
+            <th>Phone_2</th>
+            <th>Phone_3</th>
+            <th>Phone_4</th>
+            <th>Email_1</th>
+            <th>Email_2</th>
+            <th>Address_1</th>
+            <th>Address_2</th>
+            <th>Birthday</th>
+            <th>Organization</th>
+            <c:forEach var="contacts" items="${contacts}" varStatus="status">
+                <tr>
+                    <td>${contacts.contactid}</td>
+                    <td>${contacts.name}</td>
+                    <td>${contacts.phone_1}</td>
+                    <td>${contacts.phone_2}</td>
+                    <td>${contacts.phone_3}</td>
+                    <td>${contacts.phone_4}</td>
+                    <td>${contacts.email_1}</td>
+                    <td>${contacts.email_2}</td>
+                    <td>${contacts.address_1}</td>
+                    <td>${contacts.address_2}</td>
+                    <td>${contacts.birthday}</td>
+                    <td>${contacts.organization}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
 
 </body>
 </html>

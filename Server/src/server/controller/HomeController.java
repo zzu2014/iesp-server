@@ -37,11 +37,11 @@ public class HomeController {
     @RequestMapping("/registerControl")
     public void registerControl(Account account, HttpServletRequest request, HttpServletResponse response) {
 
-        System.out.println(account.getAccountname());
-        System.out.println(account.getPassword());
+        /*System.out.println(account.getAccountname());
+        System.out.println(account.getPassword());*/
 
         boolean Result = accountDAO.addAccount(account.getAccountname(), account.getPassword());
-        System.out.println(Result);
+        /*System.out.println(Result);*/
 
         String data = null;
         if(Result) {
@@ -74,57 +74,37 @@ public class HomeController {
     }
 
     @RequestMapping("/loginControl")
-    public ModelAndView loginControl(Account account, HttpServletRequest request, HttpServletResponse response) {
-        /*System.out.println(account.getAccountname());
-        System.out.println(account.getPassword());*/
-        boolean result = accountDAO.checkAccount(account.getAccountname(), account.getPassword());
+    public ModelAndView loginControl(HttpServletRequest request, HttpServletResponse response) {
+
+        /*System.out.println(request.getParameter("accountname"));
+        System.out.println(request.getParameter("password"));*/
+        boolean result = accountDAO.checkAccount(request.getParameter("accountname"), request.getParameter("password"));
         System.out.println(result);
-
-        /*if(result) {
-            *//*ModelAndView modelAndView = new ModelAndView("logsuccess");
-            modelAndView.addObject("accountname", account.getAccountname());*//*
-            *//*data = "{\"result\":'" + "Success" + "'}";
-            out.print(data);*//*
-            ModelMap modelMap = new ModelMap("accountname", account.getAccountname());
-            return new ModelAndView("redirect:/home", modelMap);
-        }
-        else {
-            *//*data = "{\"result\":\"" + "用户名不存在或密码错误" + "\"}";
-            out.print(data);*//*
-
-            *//*response.setContentType("application/json");
-            PrintWriter out = response.getWriter();
-            out.print(data);*//*
-
-
-        }*/
-
-        String data = null;
-        if(result) {
-            data = "{\"result\":\"" + "Success" + "\"}";
-        }
-        else data = "{\"result\":\"" + "Fail" + "\"}";
-
-        response.setContentType("application/json");
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
-            out.print(data);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!result) {
+            return new ModelAndView("redirect:/login");
         }
 
-        if(result) {
-            ModelMap modelMap = new ModelMap("accountname", account.getAccountname());
-            return new ModelAndView("redirect:/home", modelMap);
-        }
-
-        return null;
+        ModelAndView modelAndView = new ModelAndView("redirect:/home");
+        modelAndView.addObject("accountname", request.getParameter("accountname"));
+        return modelAndView;
     }
 
-    @RequestMapping("home")
-    public String home(HttpServletRequest request) {
+    @RequestMapping("/home")
+    public ModelAndView home(HttpServletRequest request) {
         System.out.println(request.getParameter("accountname"));
-        return "home";
+        List<Contacts> contactsList = contactsDAO.list(request.getParameter("accountname"));
+        System.out.println("size is: " + contactsList.size());
+        System.out.println(contactsList.get(0).getName());
+        System.out.println("contactid is: " + contactsList.get(0).getContactid());
+        ModelAndView modelAndView = new ModelAndView("/home");
+        modelAndView.addObject("contacts", contactsList);
+        return modelAndView;
     }
+
+    /*Test*/
+    @RequestMapping("redirect")
+    public String redirect() {
+        return "redirect:/home";
+    }
+    /*END*/
 }

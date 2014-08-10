@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Contacts {
 
-    private int userid;
+    private int userid, contactid;
     private String name, phone_1, phone_2, phone_3, phone_4, email_1, email_2
             , address_1, address_2, organization;
     private Date birthday;
@@ -108,6 +108,14 @@ public class Contacts {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public int getContactid() {
+        return contactid;
+    }
+
+    public void setContactid(int contactid) {
+        this.contactid = contactid;
     }
     /*END*/
 }

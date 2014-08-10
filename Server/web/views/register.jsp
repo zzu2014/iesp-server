@@ -27,6 +27,7 @@
                     data:user,
                     success:function(data) {
                         alert(data.result);
+                        if(data.result="Success") window.location.href="/login";
                     }
                 });
             });
