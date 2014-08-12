@@ -10,6 +10,10 @@
 <html>
 <head>
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../resources/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
     <title>Welcome to ContactBackup</title>
 </head>
 <body>
@@ -45,9 +49,10 @@
             <th>Address_2</th>
             <th>Birthday</th>
             <th>Organization</th>
+            <th>修改</th>
             <c:forEach var="contacts" items="${contacts}" varStatus="status">
                 <tr>
-                    <td>${contacts.contactid}</td>
+                    <td>${status.index + 1}</td>
                     <td>${contacts.name}</td>
                     <td>${contacts.phone_1}</td>
                     <td>${contacts.phone_2}</td>
@@ -59,9 +64,14 @@
                     <td>${contacts.address_2}</td>
                     <td>${contacts.birthday}</td>
                     <td>${contacts.organization}</td>
+                    <td><input type="button" value="修改" onclick="alert(${contacts.contactid})" ></td>
                 </tr>
             </c:forEach>
         </table>
+        <br/>
+
+        <input type="button" value="增加" />
+        <input type="button" value="退出" />
     </div>
 
 </body>

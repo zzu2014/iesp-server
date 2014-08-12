@@ -9,8 +9,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.springframework.dao.DuplicateKeyException;
 /**
  * Created by tangfei on 14-8-7.
  */
@@ -67,14 +65,12 @@ public class ContactsDAOImpl implements ContactsDAO {
         });
 
         int userid = AccountList.get(0).getUserid();
-        System.out.println("userid is: " + userid);
+        /*System.out.println("userid is: " + userid);*/
 
         /*sql query language*/
         sql = "SELECT userid, contactid, name, phone_1, phone_2, phone_3, phone_4, email_1, email_2, " +
                 "address_1, address_2, birthday, organization from contacts WHERE userid='" + userid +
                 "'ORDER BY contactid";
-
-        System.out.println("BUG1");
 
         List<Contacts> contactsList;
 
