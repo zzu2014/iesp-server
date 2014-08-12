@@ -3,14 +3,15 @@ CREATE DATABASE contactsbak;
 USE contactsbak;
 
 CREATE TABLE users(
-	userid integer(10) NOT NULL AUTO_INCREMENT,
+	userid MEDIUMINT NOT NULL AUTO_INCREMENT,
 	accountname varchar(320) NOT NULL,
 	password varchar(20) NOT NULL,
 	PRIMARY KEY (userid)
 );
 
 CREATE TABLE contacts(
-  userid integer(10) NOT NULL,
+  userid integer NOT NULL,
+  contactid integer NOT NULL,
   name varchar(50),
   phone_1 varchar(15),
   phone_2 varchar(15),
@@ -25,5 +26,5 @@ CREATE TABLE contacts(
   data_1 varchar(50),
   data_2 varchar(50),
   data_3 varchar(50),
-  FOREIGN KEY (userid) REFERENCES users(userid)
+  PRIMARY KEY (userid, contactid)
 );
