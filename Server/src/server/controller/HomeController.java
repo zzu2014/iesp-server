@@ -3,12 +3,14 @@ package server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import server.dao.AccountDAO;
 import server.dao.ContactsDAO;
 import server.model.Account;
+import server.model.Contact;
 import server.model.Contacts;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,11 +76,6 @@ public class HomeController {
 
     @RequestMapping("/login")
     public String login() {
-        java.util.Date date = new Date();
-        System.out.println("date is " + new SimpleDateFormat("yyyy-MM-dd").format(date));
-        System.out.println("datd is " + date.toString());
-        java.sql.Date date1 = new java.sql.Date(0);
-        System.out.println("sql.date is " + date1.toString());
         return "login";
     }
 
@@ -165,6 +162,45 @@ public class HomeController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /*删除单个联系人*/
+    @RequestMapping("/del")
+    public void del(Contact contact, HttpServletRequest request, HttpServletResponse response) {
+        String account = (String) request.getSession().getAttribute("account");     //获取当前帐户
+
+        System.out.println("account is " + account + ", contactid is " + contact.getContactid());   //debug
+
+        boolean result = contactsDAO.delContact(account, contact.getContactid());     //删除单个联系人
+
+        String data = null;
+        if(result) data = "{\"result\":\"" + "Delete Success" + "\"}";
+        else data = "{\"result\":\"" + "Delete Fail" + "\"}";
+
+        response.setContentType("application/json");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.print(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*修改联系人*/
+    @RequestMapping("/change")
+    public ModelAndView change(HttpServletRequest request) {
+        int contactid = Integer.valueOf(request.getParameter("contactid"));
+        System.out.println("已收到修改请求:" + contactid);      //debug
+        Contacts contacts = contactsDAO.getOneContact(contactid);
+        ModelAndView modelAndView = new ModelAndView("change");
+        modelAndView.addObject("contacts", contacts);
+        return modelAndView;
+    }
+
+    @RequestMapping("/chgContact")
+    public void chgContact(Contacts contacts, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("修改请求：");
     }
 
     /*Test 控制器间跳转*/
