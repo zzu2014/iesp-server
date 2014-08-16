@@ -80,4 +80,29 @@ public class AccountDAOImpl implements AccountDAO {
 
         return true;
     }
+
+    @Override
+    public int getUserid(String accountname) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        String sql = "SELECT userid FROM users WHERE accountname = '" +
+                accountname + "';";
+        List<Integer> userid;
+        userid = jdbcTemplate.query(sql, new RowMapper<Integer>() {
+            @Override
+            public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getInt("userid");
+            }
+        });
+
+        /*用户不存在*/
+        if(userid.size() == 0) return 0;
+
+        /*数据库出错*/
+        if(userid.size() > 1) {
+            System.out.println("程序出现错误");
+            return 0;
+        }
+
+        return userid.get(0);
+    }
 }

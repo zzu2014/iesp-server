@@ -70,7 +70,7 @@
         </table>
         <br/>
 
-        <input type="button" value="增加" />
+        <input type="button" value="增加" onclick="window.location.href='/add'" />
         <input type="button" value="退出" />
     </div>
 

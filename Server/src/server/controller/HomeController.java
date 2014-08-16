@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public class HomeController {
     }
 
     @RequestMapping("/registerControl")
-    public void registerControl(Account account, HttpServletRequest request, HttpServletResponse response) {
+    public void registerControl(Account account, HttpServletResponse response) {
 
         /*System.out.println(account.getAccountname());
         System.out.println(account.getPassword());*/
@@ -72,6 +74,11 @@ public class HomeController {
 
     @RequestMapping("/login")
     public String login() {
+        java.util.Date date = new Date();
+        System.out.println("date is " + new SimpleDateFormat("yyyy-MM-dd").format(date));
+        System.out.println("datd is " + date.toString());
+        java.sql.Date date1 = new java.sql.Date(0);
+        System.out.println("sql.date is " + date1.toString());
         return "login";
     }
 
@@ -103,19 +110,21 @@ public class HomeController {
     @RequestMapping(value = "/home")
     public ModelAndView home(HttpServletRequest request) {
 
-        if(request.getSession().getAttribute("account") == null ||
-                !request.getSession().getAttribute("account").equals(request.getParameter("accountname"))) return new ModelAndView("redirect:/login");
+        String account = (String) request.getSession().getAttribute("account");
+
+        if(account == null ||
+                !account.equals(request.getParameter("accountname"))) return new ModelAndView("redirect:/login");
 
         System.out.println("Session is " + request.getRequestedSessionId());
 
-        if(request.getParameter("accountname") == null) {
+        /*if(request.getParameter("accountname") == null) {
             System.out.println("没有登陆");
             return new ModelAndView("redirect:/login");
-        }
+        }*/
 
         /*Test*/
         /*System.out.println(loginUser);*/
-        List<Contacts> contactsList = contactsDAO.list(request.getParameter("accountname"));
+        List<Contacts> contactsList = contactsDAO.list(account);
         System.out.println("size is: " + contactsList.size());
         /*System.out.println(contactsList.get(0).getName());
         System.out.println("contactid is: " + contactsList.get(0).getContactid());*/
@@ -125,6 +134,37 @@ public class HomeController {
         modelAndView.addObject("contacts", contactsList);
 
         return modelAndView;
+    }
+
+    @RequestMapping("/add")
+    public String add(HttpServletRequest request) {
+        if(request.getSession().getAttribute("account") == null) return "redirect:/login";
+        System.out.println("add Account is " + request.getSession().getAttribute("account"));
+        return "add";
+    }
+
+    @RequestMapping(value = "/addContact")
+    /*BUG*/
+    public void addContact(Contacts contacts, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("ADDCONTANT");
+        String accountname = (String) request.getSession().getAttribute("account");
+        System.out.println("addContact accountname is " + accountname + "," + contacts.getName() + ", " + contacts.getPhone_1());
+        boolean result = contactsDAO.addContact(accountname, contacts);
+        System.out.println("result is " + result);
+
+
+        String data = null;
+        if(result) data = "{\"result\":\"" + "Success" + "\"}";
+        else data = "{\"result\":\"" + "Fail" + "\"}";
+
+        response.setContentType("application/json");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.print(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*Test 控制器间跳转*/
