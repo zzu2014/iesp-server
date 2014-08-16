@@ -12,28 +12,23 @@
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8"/>
     <script type="text/javascript" src="../resources/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
-
+        function del(contactid) {
+            alert(contactid);
+            var contact = {userid: 0, contactid: contactid};
+            $.ajax({
+                url:"/del",
+                type:"post",
+                data:contact,
+                success:function(data) {
+                    alert(data.result);
+                    if(data.result == "Delete Success") window.location.reload(true);
+                }
+            });
+        }
     </script>
     <title>Welcome to ContactBackup</title>
 </head>
 <body>
-    <%--<div align="center">
-        <h1>Contact List</h1>
-        <table border="1">
-            <th>No</th>
-            <th>Username</th>
-            <th>Email</th>
-
-            <c:forEach var="user" items="${userList}" varStatus="status">
-                <tr>
-                    <td>${status.index + 1}</td>
-                    <td>${user.username}</td>
-                    <td>${user.email}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>--%>
-
     <div align="center">
         <h1>Contact List</h1>
         <table border="1">
@@ -50,6 +45,7 @@
             <th>Birthday</th>
             <th>Organization</th>
             <th>修改</th>
+            <th>删除</th>
             <c:forEach var="contacts" items="${contacts}" varStatus="status">
                 <tr>
                     <td>${status.index + 1}</td>
@@ -64,7 +60,8 @@
                     <td>${contacts.address_2}</td>
                     <td>${contacts.birthday}</td>
                     <td>${contacts.organization}</td>
-                    <td><input type="button" value="修改" onclick="alert(${contacts.contactid})" ></td>
+                    <td><input type="button" value="修改" onclick="window.location.href='/change?contactid=' + ${contacts.contactid}" ></td>
+                    <td><input type="button" value="删除" onclick="del(${contacts.contactid})" ></td>
                 </tr>
             </c:forEach>
         </table>

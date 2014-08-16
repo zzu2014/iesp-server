@@ -176,4 +176,53 @@ public class ContactsDAOImpl implements ContactsDAO {
             }
         });
     }
+
+    @Override
+    public boolean delContact(String accountname, int contact_id) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        int userid = accountDAO.getUserid(accountname);
+        String sql = "DELETE FROM contacts WHERE userid = '" + userid +
+                "' and contactid = '" + contact_id + "';";
+        int result = jdbcTemplate.update(sql);
+        if(result == 1) return true;
+        else System.out.println("删除单个联系人发生错误！");
+        return false;
+    }
+
+    @Override
+    public Contacts getOneContact(int contactid) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        String sql = "SELECT * FROM contacts WHERE contactid = '" + contactid + "';";
+        List<Contacts> contactsList = jdbcTemplate.query(sql, new RowMapper<Contacts>() {
+            @Override
+            public Contacts mapRow(ResultSet resultSet, int i) throws SQLException {
+                Contacts contacts = new Contacts();
+                contacts.setUserid(resultSet.getInt("userid"));
+                contacts.setContactid(resultSet.getInt("contactid"));
+                contacts.setName(resultSet.getString("name"));
+                contacts.setPhone_1(resultSet.getString("phone_1"));
+                contacts.setPhone_2(resultSet.getString("phone_2"));
+                contacts.setPhone_3(resultSet.getString("phone_3"));
+                contacts.setPhone_4(resultSet.getString("phone_4"));
+                contacts.setEmail_1(resultSet.getString("email_1"));
+                contacts.setEmail_2(resultSet.getString("email_2"));
+                contacts.setAddress_1(resultSet.getString("address_1"));
+                contacts.setAddress_1(resultSet.getString("address_2"));
+                contacts.setBirthday(resultSet.getDate("birthday"));
+                contacts.setOrganization(resultSet.getString("organization"));
+                return contacts;
+            }
+        });
+        if(contactsList.size() != 1) {
+            System.out.println("获取单个联系人信息出错！");
+            return null;
+        }
+        return contactsList.get(0);
+    }
+
+    @Override
+    public boolean chgContact(int contactid, Contacts contacts) {
+
+        return false;
+    }
 }

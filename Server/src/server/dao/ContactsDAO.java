@@ -13,4 +13,10 @@ public interface ContactsDAO {
     public boolean addContact(String accountname, Contacts contacts);
 
     public void insertMutliContact(String accountname, List<Contacts> ContactsList_2);
+
+    public boolean delContact(String accountname, int contact_id);
+
+    public Contacts getOneContact(int contactid);
+
+    public boolean chgContact(int contactid, Contacts contacts);
 }

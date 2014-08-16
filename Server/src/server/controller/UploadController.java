@@ -12,7 +12,6 @@ import server.dao.ContactsDAO;
 import server.dao.UnZipDAO;
 import server.model.Contacts;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -59,19 +58,12 @@ public class UploadController {
                     System.out.println(jsonString);
                     //将jsonString数组中的联系人信息保存到ContactsList_2中
                     List<Contacts> ContactsList_2 = contactListDAO.stringToContacts(jsonString);  //将
-
-
-
-
                     System.out.println("DEBUG");
                     /*获取该request.getParameter("accountname")账户下的联系人,得到ContadctsList_1*/
                     System.out.print("account " + request.getParameter("accountname"));
                     /*List<Contacts> ContactsList_1 = contactsDAO.list(request.getParameter("accountname"));*/
                     System.out.print("Session account " + request.getSession().getAttribute("account"));
                     List<Contacts> ContactsList_1 = contactsDAO.list(account);
-
-
-
                     System.out.println("DEBUG1");
 					ContactsList_2 = contactListDAO.cmp(ContactsList_1, ContactsList_2);
                     System.out.println("DEBUG2");
@@ -85,8 +77,6 @@ public class UploadController {
                     }
                     /*if(ContactsList_2 != null)
                         contactsDAO.insertMutliContact(account, ContactsList_2);*/
-
-
                     for(Contacts ct : ContactsList_2) {
                         System.out.println("ContactsList_2_1 name : " + ct.getName());
                         System.out.println("ContactsList_2_1 birthday : " + ct.getBirthday());

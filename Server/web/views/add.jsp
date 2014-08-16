@@ -23,7 +23,6 @@
                 var address_1 = $("#address_1").val();
                 var address_2 = $("#address_2").val();
                 var birthday = $("#birthday").val();
-                alert(birthday);
                 var organization = $("#organization").val();
                 var contacts = {name:name, phone_1:phone_1, phone_2:phone_2, phone_3:phone_3, phone_4:phone_4, email_1:email_1,
                     email_2:email_2, address_1:address_1, address_2:address_2, birthday:birthday, organization:organization};
